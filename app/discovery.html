@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VELTO Discovery — Meilleurs Deals Voyage depuis le Canada</title>
+    <meta name="description" content="Découvrez les meilleures offres vol + hôtel depuis le Canada. VELTO compare des milliers de deals en temps réel pour vous trouver le prix le plus bas vers Bali, Tokyo, Paris, New York et plus.">
+    <meta name="keywords" content="voyage Canada, deals vol hôtel, CAD, comparateur voyage, Bali, Tokyo, Paris, New York, Rome, Santorin, Islande">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="VELTO — Trouvez votre prochain voyage au meilleur prix">
+    <meta property="og:description" content="L'IA de voyage qui compare des milliers d'offres pour les canadiens. Vol + Hôtel en CAD.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="discovery.html">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/dossier.css">
+    <style>
+        :root {
+            --primary: #22c55e;
+            --accent: #4ade80;
+            --bg: #0f172a;
+            --text: #ffffff;
+            --glass: rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        /* Snap Container */
+        .reel-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .reel-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Section Reel */
+        .reel {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .reel img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* Overlay & Info */
+        .reel-overlay {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            padding: 3rem 5% 6rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        }
+
+        .reel-content {
+            max-width: 600px;
+        }
+
+        .badge-ia {
+            background: rgba(34, 197, 94, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--primary);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            background: var(--accent);
+        }
+
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Navigation UI */
+        .back-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 10;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1.25rem;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .scroll-hint {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 10;
+            writing-mode: vertical-rl;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.7rem;
+            opacity: 0.6;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* ============================
+           AI CHAT INTERFACE
+        ============================ */
+
+        /* FAB Button */
+        .ai-fab {
+            position: fixed;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, rgba(34,197,94,0.25), rgba(74,222,128,0.15));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(34,197,94,0.4);
+            border-radius: 100px;
+            padding: 0.9rem 2rem;
+            cursor: pointer;
+            color: white;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 32px rgba(34,197,94,0.2), 0 0 0 1px rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+        .ai-fab:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 12px 40px rgba(34,197,94,0.35);
+            border-color: rgba(74,222,128,0.7);
+        }
+        .ai-fab .fab-logo {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        .ai-fab .mic-icon {
+            font-size: 1.1rem;
+            animation: none;
+        }
+        .ai-fab.listening .mic-icon {
+            animation: mic-pulse 1s infinite;
+        }
+        @keyframes mic-pulse {
+            0%, 100% { color: white; }
+            50% { color: #4ade80; text-shadow: 0 0 10px #4ade80; }
+        }
+
+        /* Chat Window */
+        .chat-window {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 60;
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(34,197,94,0.2);
+            border-bottom: none;
+            border-radius: 24px 24px 0 0;
+            padding: 0;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 -20px 60px rgba(0,0,0,0.5);
+        }
+        .chat-window.open {
+            transform: translateY(0);
+        }
+
+        /* Chat Header */
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .chat-header img {
+            width: 32px;
+            height: 32px;
+            filter: brightness(0) invert(1);
+        }
+        .chat-header-info .title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: white;
+        }
+        .chat-header-info .status {
+            font-size: 0.75rem;
+            color: #4ade80;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 6px #4ade80;
+        }
+        .chat-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 6px;
+            transition: color 0.2s;
+        }
+        .chat-close:hover { color: white; }
+
+        /* Messages */
+        .chat-messages {
+            height: 260px;
+            overflow-y: auto;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .chat-messages::-webkit-scrollbar { width: 4px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+        .msg {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            animation: msg-in 0.3s ease;
+        }
+        @keyframes msg-in {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .msg.ai {
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.15);
+            color: #e2e8f0;
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+        }
+        .msg.user {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            border-bottom-right-radius: 4px;
+            align-self: flex-end;
+        }
+        .typing {
+            display: flex;
+            gap: 5px;
+            padding: 0.75rem 1rem;
+            align-self: flex-start;
+        }
+        .typing span {
+            width: 7px; height: 7px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: typing-dot 1.2s infinite;
+        }
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing-dot {
+            0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+            40% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* Input */
+        .chat-input-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem 1.5rem;
+        }
+        .chat-input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 100px;
+            padding: 0.8rem 1.25rem;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .chat-input::placeholder { color: #475569; }
+        .chat-input:focus { border-color: rgba(34,197,94,0.5); }
+        .btn-send, .btn-mic {
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            border: none;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .btn-send {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-send:hover { background: var(--accent); transform: scale(1.1); }
+        .btn-mic {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8;
+        }
+        .btn-mic:hover, .btn-mic.active { color: #4ade80; border-color: #4ade80; }
+
+        /* History Sidebar */
+        .btn-history-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .btn-history-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+        .history-sidebar {
+            position: fixed;
+            top: 0;
+            right: -110vw;
+            width: min(300px, 90vw);
+            height: 100%;
+            background: rgba(15, 23, 42, 0.97);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 20px;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        .history-sidebar.open {
+            right: 0;
+        }
+        @media (max-width: 400px) {
+            .history-sidebar { padding: 15px; }
+            .history-item { padding: 10px; }
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+        .history-header h3 { font-weight: 500; font-size: 1.1rem; color: white; margin: 0; }
+        .history-list {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .history-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(255,255,255,0);
+        }
+        .history-item:hover { 
+            background: rgba(255, 255, 255, 0.1); 
+            border-color: rgba(74,222,128,0.3);
+            transform: translateX(-5px);
+        }
+        .history-item img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+        .history-item .info h4 { font-size: 0.9rem; margin: 0 0 2px 0; color: white; }
+        .history-item .info p { font-size: 0.75rem; color: #94a3b8; margin: 0; }
+        .btn-clear-history {
+            margin-top: 15px;
+            background: none;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .btn-clear-history:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
+        .empty-hint { color: #64748b; text-align: center; margin-top: 40px; font-style: italic; font-size: 0.9rem; }
+        .close-btn { background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer; transition: color 0.2s; }
+        .close-btn:hover { color: white; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">← Retour</a>
+    <div class="scroll-hint">Défiler pour explorer</div>
+
+    <!-- NEW: Dossier Dashboard -->
+    <div id="travel-dossier-root">
+        <div class="dossier-card" onclick="toggleChat()">
+            <div class="dossier-header">
+                <span class="dossier-title">Mon Dossier Voyage</span>
+                <span class="completion-badge" id="dossier-progress-text">0%</span>
+            </div>
+            
+            <div class="dossier-items">
+                <div class="dossier-item" id="item-city">
+                    <span class="icon">🛫</span>
+                    <div class="info">
+                        <span class="label">Départ</span>
+                        <span class="value" id="val-city">Non défini</span>
+                    </div>
+                </div>
+                <div class="dossier-item" id="item-travelers">
+                    <span class="icon">👥</span>
+                    <div class="info">
+                        <span class="label">Passagers</span>
+                        <span class="value" id="val-travelers">À préciser</span>
+                    </div>
+                </div>
+                <div class="dossier-item" id="item-budget">
+                    <span class="icon">💰</span>
+                    <div class="info">
+                        <span class="label">Budget</span>
+                        <span class="value" id="val-budget">Flexible</span>
+                    </div>
+                </div>
+                <div class="dossier-item" id="item-dates">
+                    <span class="icon">📅</span>
+                    <div class="info">
+                        <span class="label">Période</span>
+                        <span class="value" id="val-dates">À définir</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dossier-progress-bg">
+                <div class="dossier-progress-fill" id="dossier-progress-bar"></div>
+            </div>
+
+            <div class="dossier-alert" id="dossier-alert">
+                <span class="alert-text"><i class="fas fa-magic"></i> IA : Recommandations adaptées activées</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI FAB Button -->
+    <button class="ai-fab" id="ai-fab-btn" onclick="toggleChat()">
+        <img src="assets/logo_v1.png" alt="Velto AI" class="fab-logo">
+        Demande à l'IA
+        <span class="mic-icon">🎙️</span>
+    </button>
+
+    <!-- History Toggle -->
+    <button class="btn-history-toggle" onclick="toggleHistory()" title="Mon Historique">
+        <span class="icon">🕒</span>
+    </button>
+
+    <!-- History Sidebar -->
+    <div class="history-sidebar" id="history-sidebar">
+        <div class="history-header">
+            <h3>Mes Recherches</h3>
+            <button class="close-btn" onclick="toggleHistory()">✕</button>
+        </div>
+        <div id="history-list" class="history-list">
+            <!-- Dynamically filled -->
+            <p class="empty-hint">Aucun historique pour le moment.</p>
+        </div>
+        <button class="btn-clear-history" onclick="clearHistory()">Vider l'historique</button>
+    </div>
+
+    <!-- AI Chat Window -->
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">
+            <img src="assets/logo_v1.png" alt="VELTO AI">
+            <div class="chat-header-info">
+                <div class="title">Éléonore — Agente Experte VELTO</div>
+                <div class="status"><span class="status-dot"></span> En ligne — Spécialiste Canada 🇨🇦</div>
+            </div>
+            <button class="chat-close" onclick="toggleChat()">✕</button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="msg ai">Bonjour ! Je suis <strong>Éléonore</strong>, votre agente experte VELTO 👒. Je suis là pour bâtir votre projet de voyage idéal au départ du Canada.<br><br>Quelle destination vous fait rêver aujourd'hui ?</div>
+        </div>
+        <div class="chat-input-row">
+            <input type="text" class="chat-input" id="chat-input" placeholder="Ex: Je veux aller à Tokyo..." onkeydown="handleKey(event)">
+            <button class="btn-mic" id="btn-mic" onclick="toggleVoice()" title="Parler">🎙️</button>
+            <button class="btn-send" onclick="sendMessage()" title="Envoyer">➤</button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loader" style="position: fixed; inset: 0; background: var(--bg); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease;">
+        <div style="width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 1.5rem; color: #94a3b8; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;">Analyse des offres IA...</p>
+    </div>
+
+    <div class="reel-container" id="main-reel">
+        <!-- Content injected by JS -->
+    </div>
+
+    <script src="assets/data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('main-reel');
+            const loader = document.getElementById('loader');
+
+            // 1. Shuffle and prioritize promos
+            const shuffled = shuffleDestinations([...destinations]);
+            // Put promos first (discretionary logic)
+            const sorted = shuffled.sort((a, b) => (b.promo === a.promo) ? 0 : b.promo ? 1 : -1);
+
+            // 2. Render cards
+            sorted.forEach(dest => {
+                const section = document.createElement('section');
+                section.className = 'reel';
+                section.innerHTML = `
+                    <img src="${dest.image}" alt="${dest.name}" loading="lazy">
+                    <div class="reel-overlay">
+                        <div class="reel-content">
+                            <div class="badge-ia">${dest.badge}</div>
+                            <h2>${dest.name}</h2>
+                            <p class="price">${dest.price} • Sélection IA</p>
+                            <p class="description">${dest.description}</p>
+                            <div class="actions">
+                                <a href="#" class="btn btn-primary">Voir l'offre</a>
+                                <a href="#" class="btn btn-glass">Simulation IA</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(section);
+            });
+
+            // 3. Hide loader after a short delay for premium feel
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 800);
+            }, 1500);
+        });
+
+        // Spinner animation
+        const style = document.createElement('style');
+        style.textContent = `@keyframes spin { to { transform: rotate(360deg); } }`;
+        document.head.appendChild(style);
+    </script>
+    <script src="assets/chat.js"></script>
+    <script>
+        // =====================
+        // CHAT UI CONTROLLER
+        // =====================
+        let chatOpen = false;
+        let isListening = false;
+        let recognition = null;
+
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            document.getElementById('chat-window').classList.toggle('open', chatOpen);
+            if (chatOpen) {
+                document.getElementById('ai-fab-btn').style.opacity = '0';
+                document.getElementById('ai-fab-btn').style.pointerEvents = 'none';
+                setTimeout(() => document.getElementById('chat-input').focus(), 400);
+            } else {
+                document.getElementById('ai-fab-btn').style.opacity = '1';
+                document.getElementById('ai-fab-btn').style.pointerEvents = 'auto';
+            }
+        }
+
+        function handleKey(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        function addMessage(text, role) {
+            const messages = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = `msg ${role}`;
+            div.innerHTML = text;
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function showTyping() {
+            const messages = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = 'typing';
+            div.id = 'typing-indicator';
+            div.innerHTML = '<span></span><span></span><span></span>';
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function hideTyping() {
+            const el = document.getElementById('typing-indicator');
+            if (el) el.remove();
+        }
+
+        function sendMessage() {
+            try {
+                const input = document.getElementById('chat-input');
+                const text = input.value.trim();
+                if (!text) return;
+
+                console.log("VELTO Debug: Sending message...", text);
+                addMessage(text, 'user');
+                input.value = '';
+
+                // Appel au cerveau IA
+                if (typeof analyzeMessage !== 'function') {
+                    addMessage("Erreur: Le cerveau d'Éléonore n'est pas encore chargé. Réessaie dans une seconde ! 👒", 'ai');
+                    return;
+                }
+
+                const analysis = analyzeMessage(text);
+                const response = getAIResponse(analysis);
+
+                // Réponse instantanée
+                addMessage(response.text, 'ai');
+
+                if (response.filter) {
+                    setTimeout(() => {
+                        if (typeof scrollToDestination === 'function') {
+                            scrollToDestination(response.filter);
+                            saveToHistory(response.filter);
+                        }
+                    }, 100);
+                }
+            } catch (err) {
+                console.error("VELTO Error:", err);
+                addMessage("Oups ! J'ai eu un petit bug de mémoire. Peux-tu rafraîchir la page ? 👒", 'ai');
+            }
+        }
+
+        // Voice input
+        function toggleVoice() {
+            const micBtn = document.getElementById('btn-mic');
+            const fab = document.getElementById('ai-fab-btn');
+
+            if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+                addMessage('La reconnaissance vocale n\'est pas disponible sur ce navigateur. Essaie Chrome ! 🎙️', 'ai');
+                return;
+            }
+
+            if (isListening) {
+                recognition.stop();
+                isListening = false;
+                micBtn.classList.remove('active');
+                fab.classList.remove('listening');
+                return;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'fr-FR';
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                isListening = true;
+                micBtn.classList.add('active');
+                fab.classList.add('listening');
+            };
+
+            recognition.onresult = (e) => {
+                const transcript = e.results[0][0].transcript;
+                document.getElementById('chat-input').value = transcript;
+                sendMessage();
+            };
+
+            recognition.onend = () => {
+                isListening = false;
+                micBtn.classList.remove('active');
+                fab.classList.remove('listening');
+            };
+
+            recognition.start();
+        }
+
+        // =====================
+        // HISTORY CONTROLLER
+        // =====================
+        function toggleHistory() {
+            document.getElementById('history-sidebar').classList.toggle('open');
+            if (document.getElementById('history-sidebar').classList.contains('open')) {
+                renderHistory();
+            }
+        }
+
+        function saveToHistory(destKey) {
+            let history = JSON.parse(localStorage.getItem('velto_history') || '[]');
+            // Try to find full match in destinations
+            const dest = destinations.find(d => 
+                d.name.toLowerCase().includes(destKey.toLowerCase()) || 
+                d.image.toLowerCase().includes(destKey.toLowerCase())
+            );
+            if (!dest) return;
+
+            // Remove duplicates to push to top
+            history = history.filter(item => item.name !== dest.name);
+            history.unshift({
+                name: dest.name,
+                image: dest.image,
+                price: dest.price,
+                timestamp: Date.now()
+            });
+
+            // Keep top 10
+            if (history.length > 10) history.pop();
+
+            localStorage.setItem('velto_history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('history-list');
+            try {
+                const history = JSON.parse(localStorage.getItem('velto_history') || '[]');
+                
+                if (history.length === 0) {
+                    list.innerHTML = '<p class="empty-hint">Aucun historique pour le moment.</p>';
+                    return;
+                }
+
+                list.innerHTML = history.map(item => `
+                    <div class="history-item" onclick="jumpToDestination('${item.name.replace(/'/g, "\\'")}')">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="info">
+                            <h4>${item.name}</h4>
+                            <p>${item.price}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch(e) {
+                list.innerHTML = '<p class="empty-hint">Erreur de lecture de l\'historique.</p>';
+            }
+        }
+
+        function clearHistory() {
+            if (confirm('Voulez-vous vraiment vider votre historique ?')) {
+                localStorage.removeItem('velto_history');
+                localStorage.removeItem('velto_session_state'); // On reset aussi l'IA pour être propre
+                location.reload(); // On recharge pour tout remettre à zéro
+            }
+        }
+
+        function jumpToDestination(name) {
+            toggleHistory();
+            scrollToDestination(name.toLowerCase());
+        }
+
+        // Listen for AI filter events
+        window.addEventListener('saveToHistory', (e) => {
+            saveToHistory(e.detail);
+        });
+
+        // Initialize history on load
+        document.addEventListener('DOMContentLoaded', renderHistory);
+
+        // =====================
+        // DOSSIER SYNC LOGIC
+        // =====================
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'UPDATE_DOSSIER') {
+                const s = event.data.state;
+                const p = event.data.progress;
+
+                console.log("VELTO Dashboard Sync:", s);
+
+                // Update Progress
+                document.getElementById('dossier-progress-text').innerText = p + '%';
+                document.getElementById('dossier-progress-bar').style.width = p + '%';
+
+                // Update Fields
+                if (s.departureCity) {
+                    document.getElementById('item-city').classList.add('active');
+                    document.getElementById('val-city').innerText = s.departureCity;
+                }
+                
+                if (s.travelers) {
+                    document.getElementById('item-travelers').classList.add('active');
+                    let tStr = s.travelers.charAt(0).toUpperCase() + s.travelers.slice(1);
+                    if (s.adults || s.children) {
+                        tStr += ` (${s.adults || 1}a / ${s.children || 0}e)`;
+                    }
+                    document.getElementById('val-travelers').innerText = tStr;
+                }
+
+                if (s.budget) {
+                    document.getElementById('item-budget').classList.add('active');
+                    document.getElementById('val-budget').innerText = s.budget + (s.budget === 'Flexible' ? '' : ' CAD');
+                }
+
+                if (s.dates) {
+                    document.getElementById('item-dates').classList.add('active');
+                    document.getElementById('val-dates').innerText = s.dates;
+                }
+
+                // Show Family Insight if 5+ people
+                const total = (s.adults || 0) + (s.children || 0);
+                if (total >= 5) {
+                    document.getElementById('dossier-alert').classList.add('visible');
+                }
+            }
+
+            if (event.data === 'openBooking') {
+                alert("Ouverture du système de réservation sécurisé VELTO... 🛡️");
+            }
+        });
+    </script>
+</body>
+</html>

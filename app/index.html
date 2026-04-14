@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VELTO — Le Futur du Voyage Intelligent | Vol + Hôtel en CAD</title>
+    <meta name="description" content="VELTO utilise l'IA pour dénicher les meilleurs deals voyage. Spécialisé pour les Canadiens.">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #22c55e;
+            --primary-glow: rgba(34, 197, 94, 0.4);
+            --bg: #0b0f1a;
+            --text: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+        h1, h2 { font-family: 'Outfit', sans-serif; }
+
+        /* Dynamic Background */
+        .hero-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 50% -20%, #1e293b 0%, #0b0f1a 100%);
+        }
+        .glow {
+            position: absolute; width: 600px; height: 600px; border-radius: 50%;
+            background: var(--primary-glow); filter: blur(150px);
+            top: -200px; left: 50%; transform: translateX(-50%); opacity: 0.3;
+        }
+
+        /* Navbar */
+        nav {
+            padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo { font-size: 1.8rem; font-weight: 700; display: flex; align-items: center; gap: 10px; color: white; text-decoration: none; font-family: 'Outfit'; }
+        .logo span { color: var(--primary); }
+
+        /* Price Ticker */
+        .ticker-wrap {
+            width: 100%; height: 40px; background: rgba(34, 197, 94, 0.05);
+            border-bottom: 1px solid var(--border); overflow: hidden; display: flex; align-items: center;
+        }
+        .ticker { display: flex; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .ticker-item { padding: 0 40px; color: #94a3b8; font-size: 0.8rem; font-weight: 500; }
+        .ticker-item b { color: var(--primary); }
+        @keyframes ticker { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
+
+        /* Hero Section */
+        .hero { padding: 120px 5% 80px; text-align: center; max-width: 1200px; margin: 0 auto; }
+        .badge { background: rgba(34, 197, 94, 0.1); color: var(--primary); padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; display: inline-block; border: 1px solid var(--primary-glow); }
+        .hero h1 { font-size: 5.5rem; line-height: 0.95; letter-spacing: -3px; margin-bottom: 30px; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.3rem; color: #94a3b8; max-width: 700px; margin: 0 auto 40px; }
+
+        /* Buttons */
+        .cta-group { display: flex; gap: 15px; justify-content: center; }
+        .btn { padding: 16px 36px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s; font-size: 1rem; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 40px var(--primary-glow); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 50px var(--primary-glow); }
+        .btn-secondary { background: var(--glass); border: 1px solid var(--border); color: white; }
+        .btn-secondary:hover { background: rgba(255,255,255,0.08); }
+
+        /* Mockup / Preview */
+        .preview {
+            max-width: 1000px; margin: 60px auto; border-radius: 24px; overflow: hidden;
+            border: 1px solid var(--border); box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            position: relative; aspect-ratio: 16/9; background: #1e293b;
+        }
+        .preview iframe { width: 100%; height: 100%; border: none; }
+
+        /* Grid Features */
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; padding: 80px 5%; max-width: 1400px; margin: 0 auto; }
+        .feat-card { background: var(--glass); border: 1px solid var(--border); padding: 40px; border-radius: 24px; transition: 0.4s; }
+        .feat-card:hover { border-color: var(--primary); transform: scale(1.02); }
+        .feat-card i { font-size: 2rem; color: var(--primary); margin-bottom: 20px; display: block; }
+        .feat-card h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        .feat-card p { color: #94a3b8; font-size: 0.95rem; }
+
+        footer { padding: 60px 5%; text-align: center; border-top: 1px solid var(--border); color: #475569; }
+    </style>
+</head>
+<body>
+    <div class="hero-bg"><div class="glow"></div></div>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item">🇲🇽 CANCÚN : <b>-45%</b> (Flash Deal)</div>
+            <div class="ticker-item">🇯🇵 TOKYO : <b>1 890 CAD</b> (Nouveau Prix)</div>
+            <div class="ticker-item">🇫🇷 PARIS : <b>Vols Directs YUL</b></div>
+            <div class="ticker-item">🇮🇩 BALI : <b>Hôtels Sélectionnés IA</b></div>
+            <div class="ticker-item">🇮🇸 ISLANDE : <b>Aurores Boréales</b></div>
+            <!-- Duplication pour boucle infinie -->
+            <div class="ticker-item">🇲🇽 CANCÚN : <b>-45%</b></div>
+            <div class="ticker-item">🇯🇵 TOKYO : <b>1 890 CAD</b></div>
+            <div class="ticker-item">🇫🇷 PARIS : <b>Vols Directs YUL</b></div>
+            <div class="ticker-item">🇮🇩 BALI : <b>Hôtels Sélectionnés IA</b></div>
+            <div class="ticker-item">🇮🇸 ISLANDE : <b>Aurores Boréales</b></div>
+        </div>
+    </div>
+
+    <nav>
+        <a href="#" class="logo">VELTO<span>.</span></a>
+        <div class="nav-links">
+            <a href="discovery.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">Explorer les Deals</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="badge">Propulsé par Éléonore AI 👒</div>
+        <h1>Voyagez plus loin.<br>Payez moins cher.</h1>
+        <p>L'intelligence artificielle spécialisée pour le Canada qui compare des milliers de sources pour vous garantir le prix le plus bas en CAD.</p>
+        <div class="cta-group">
+            <a href="discovery.html" class="btn btn-primary">Démarrer ma recherche</a>
+            <a href="#demo" class="btn btn-secondary">Voir la démo</a>
+        </div>
+    </section>
+
+    <div class="preview" id="demo">
+        <iframe src="discovery.html" loading="lazy" style="pointer-events: none;"></iframe>
+        <div style="position: absolute; inset: 0; background: linear-gradient(to top, var(--bg), transparent); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 40px;">
+            <a href="discovery.html" class="btn btn-primary">Ouvrir l'application complète</a>
+        </div>
+    </div>
+
+    <div class="features">
+        <div class="feat-card">
+            <h3>Comparaison IA</h3>
+            <p>Notre IA analyse les variations de prix sur 48h pour prédire le meilleur moment pour réserver.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Spécialiste Canada</h3>
+            <p>Tous les prix sont en CAD, incluant les taxes de départ de Montréal, Toronto, Vancouver et plus.</p>
+        </div>
+        <div class="feat-card">
+            <h3>Dossier Intelligent</h3>
+            <p>Bâtissez votre voyage pas à pas. Éléonore retient vos préférences pour des suggestions uniques.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 VELTO. Le futur du voyage est ici. <br> Made with Love in Canada 🇨🇦</p>
+    </footer>
+</body>
+</html>
