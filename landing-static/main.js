@@ -1,104 +1,95 @@
+// Register GSAP Plugins
+gsap.registerPlugin(ScrollTrigger);
+
 document.addEventListener('DOMContentLoaded', () => {
+
+    // 1. Entrance Animations (Reveal Class)
+    const revealElements = document.querySelectorAll('.reveal');
     
-    // 1. Smooth Scroll Animations for Sections
-    const observerOptions = {
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
+    revealElements.forEach((el, index) => {
+        gsap.from(el, {
+            scrollTrigger: {
+                trigger: el,
+                start: "top 90%",
+                toggleActions: "play none none none"
+            },
+            y: 40,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power4.out",
+            delay: index * 0.05
         });
-    }, observerOptions);
-
-    document.querySelectorAll('section').forEach(section => {
-        section.classList.add('fade-in-section');
-        observer.observe(section);
     });
 
-    // 2. AI Chat Mockup Animation (Simulated typing)
-    const chatBody = document.getElementById('chat-body');
+    // 2. Parallax on Discovery Cards
+    const cards = document.querySelectorAll('.p-card');
+    cards.forEach(card => {
+        gsap.to(card.querySelector('img'), {
+            scrollTrigger: {
+                trigger: card,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            },
+            scale: 1.2,
+            y: 20
+        });
+    });
+
+    // 3. Organic AI Chat Simulation (Éléonore)
+    const chatContainer = document.getElementById('chat-container');
     const messages = [
-        { role: 'user', text: "Trouve-moi un deal pour Santorin en septembre." },
-        { role: 'ai', text: "Une seconde... Je scanne les vols YUL-JTR. 🇬🇷" },
-        { role: 'ai', text: "Trouvé ! 940 CAD aller-retour avec une escale à Paris. C'est 200 CAD de moins que la moyenne saisonnière !" }
+        { role: 'ai', text: "Bonjour. Je suis <strong>Éléonore</strong>, votre concierge numérique Velto." },
+        { role: 'user', text: "Je cherche une destination calme et luxueuse pour septembre." },
+        { role: 'ai', text: "Je vous suggère <strong>Bali</strong>. Mes analyses indiquent une baisse de prix de 15% sur les villas haut de gamme cette semaine." },
+        { role: 'ai', text: "Voulez-vous que je prépare une simulation de budget en CAD ?" }
     ];
 
-    let messageIndex = 0;
+    let currentMsgIndex = 0;
 
-    function typeMessage() {
-        if (messageIndex < messages.length) {
-            const msg = messages[messageIndex];
-            const div = document.createElement('div');
-            div.className = `chat-msg ${msg.role}`;
-            div.innerHTML = msg.text;
-            div.style.opacity = '0';
-            div.style.transform = 'translateY(10px)';
-            div.style.transition = 'all 0.4s ease';
-            
-            chatBody.appendChild(div);
-            
+    function addMessage(msg) {
+        const bubble = document.createElement('div');
+        bubble.className = `bubble-v ${msg.role}`;
+        bubble.innerHTML = msg.text;
+        chatContainer.appendChild(bubble);
+
+        // Animate in
+        setTimeout(() => {
+            bubble.classList.add('active');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }, 100);
+    }
+
+    function runChat() {
+        if (currentMsgIndex < messages.length) {
+            const delay = messages[currentMsgIndex].role === 'ai' ? 2000 : 1500;
             setTimeout(() => {
-                div.style.opacity = '1';
-                div.style.transform = 'translateY(0)';
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }, 100);
-
-            messageIndex++;
-            setTimeout(typeMessage, 3000);
+                addMessage(messages[currentMsgIndex]);
+                currentMsgIndex++;
+                runChat();
+            }, delay);
         }
     }
 
-    // Start typing animation when in view
-    const chatObserver = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting && messageIndex === 0) {
-            setTimeout(typeMessage, 1000);
+    // Trigger chat when AI section is in view
+    ScrollTrigger.create({
+        trigger: ".ai-organic",
+        start: "top 60%",
+        onEnter: () => {
+            if (currentMsgIndex === 0) runChat();
         }
     });
-    chatObserver.observe(document.querySelector('.chat-mockup'));
 
-    // 3. Reels Horizontal Scroll Indication
-    const reels = document.getElementById('reels');
-    let isDown = false;
-    let startDate;
-    let scrollLeft;
-
-    reels.addEventListener('mousedown', (e) => {
-        isDown = true;
-        startDate = e.pageX - reels.offsetLeft;
-        scrollLeft = reels.scrollLeft;
+    // 4. Logo Scale on Scroll
+    gsap.to(".f-logo", {
+        scrollTrigger: {
+            trigger: "footer",
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: 2
+        },
+        letterSpacing: "20px",
+        opacity: 0.1
     });
 
-    reels.addEventListener('mouseleave', () => {
-        isDown = false;
-    });
-
-    reels.addEventListener('mouseup', () => {
-        isDown = false;
-    });
-
-    reels.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - reels.offsetLeft;
-        const walk = (x - startDate) * 2;
-        reels.scrollLeft = scrollLeft - walk;
-    });
 });
-
-// Add fade-in styles dynamically
-const style = document.createElement('style');
-style.textContent = `
-    .fade-in-section {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 1s ease-out, transform 1s ease-out;
-    }
-    .fade-in-section.visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
-document.head.appendChild(style);
