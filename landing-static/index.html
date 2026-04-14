@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VELTO — Voyagez plus loin pour moins cher | IA de Voyage</title>
+    <meta name="description" content="L'algorithme de voyage le plus sophistiqué du Canada. VELTO utilise l'IA pour vous trouver les meilleurs prix en CAD vers Bali, Tokyo, Paris et plus.">
+    
+    <!-- Favicon Placeholder -->
+    <link rel="icon" type="image/png" href="assets/logo_v1.png">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- Background Decoration -->
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav>
+        <a href="#" class="logo">VELTO<span>.</span></a>
+        <div class="nav-links">
+            <a href="#discovery" class="nav-link">Destinations</a>
+            <a href="#ai" class="nav-link">Expertise IA</a>
+            <a href="#contact" class="nav-link">Support</a>
+            <button class="btn-vibe">Essayer l'App</button>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="badge" id="hero-badge">
+                <i data-lucide="sparkles" size="14"></i> Propulsé par Éléonore AI
+            </div>
+            <h1>Ailleurs.<br>Pour beaucoup moins.</h1>
+            <p class="subtitle">
+                L'algorithme de voyage le plus sophistiqué du Canada. 
+                Des milliers de deals comparés en 2ms pour vous garantir le prix le plus bas en CAD.
+            </p>
+            <div class="cta-group">
+                <a href="#discovery" class="btn-primary">
+                    Explorer les Deals <i data-lucide="chevron-right"></i>
+                </a>
+                <a href="#ai" class="btn-secondary">Découvrir Éléonore</a>
+            </div>
+
+            <!-- Ticker -->
+            <div class="ticker-wrap">
+                <div class="ticker">
+                    <div class="ticker-item">🇲🇽 CANCÚN : <b>-45%</b></div>
+                    <div class="ticker-item">🇯🇵 TOKYO : <b>1 890 CAD</b></div>
+                    <div class="ticker-item">🇫🇷 PARIS : <b>Deal Flash YUL</b></div>
+                    <div class="ticker-item">🇮🇩 BALI : <b>-30% IA Selection</b></div>
+                    <div class="ticker-item">🇬🇷 SANTORIN : <b>Meilleur Prix CAD</b></div>
+                    <!-- Duplication for loop -->
+                    <div class="ticker-item">🇲🇽 CANCÚN : <b>-45%</b></div>
+                    <div class="ticker-item">🇯🇵 TOKYO : <b>1 890 CAD</b></div>
+                    <div class="ticker-item">🇫🇷 PARIS : <b>Deal Flash YUL</b></div>
+                    <div class="ticker-item">🇮🇩 BALI : <b>-30% IA Selection</b></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DISCOVERY DECK (The Reels Experience) -->
+        <section class="discovery" id="discovery">
+            <div class="discovery-header">
+                <h2>Le Discovery Deck.</h2>
+                <p>Découvrez le monde comme vos Reels préférés. Une expérience immersive pour ne plus jamais rater un deal.</p>
+            </div>
+
+            <div class="reels-container" id="reels">
+                <!-- Reel 1: Bali -->
+                <div class="reel-card">
+                    <img src="assets/bali.png" alt="Bali">
+                    <div class="reel-overlay">
+                        <div class="reel-badge">OFFRE IA -30%</div>
+                        <h3>Bali, Indonésie</h3>
+                        <p class="price">À partir de 1 240 CAD</p>
+                    </div>
+                </div>
+                <!-- Reel 2: Tokyo -->
+                <div class="reel-card">
+                    <img src="assets/tokyo.png" alt="Tokyo">
+                    <div class="reel-overlay">
+                        <div class="reel-badge">TOP VENTE</div>
+                        <h3>Tokyo, Japon</h3>
+                        <p class="price">À partir de 1 150 CAD</p>
+                    </div>
+                </div>
+                <!-- Reel 3: Paris -->
+                <div class="reel-card">
+                    <img src="assets/paris.png" alt="Paris">
+                    <div class="reel-overlay">
+                        <div class="reel-badge">DEAL FLASH</div>
+                        <h3>Paris, France</h3>
+                        <p class="price">À partir de 890 CAD</p>
+                    </div>
+                </div>
+                <!-- Reel 4: Iceland -->
+                <div class="reel-card">
+                    <img src="assets/iceland.png" alt="Islande">
+                    <div class="reel-overlay">
+                        <div class="reel-badge">DERNIÈRE MINUTE</div>
+                        <h3>Reykjavík, Islande</h3>
+                        <p class="price">À partir de 740 CAD</p>
+                    </div>
+                </div>
+                <!-- Reel 5: Rome -->
+                <div class="reel-card">
+                    <img src="assets/rome.png" alt="Rome">
+                    <div class="reel-overlay">
+                        <div class="reel-badge">SÉLECTION ÉLÉONORE</div>
+                        <h3>Rome, Italie</h3>
+                        <p class="price">À partir de 920 CAD</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI SECTION -->
+        <section class="ai-section" id="ai">
+            <div class="chat-mockup">
+                <div class="chat-header">
+                    <div class="chat-avatar">👒</div>
+                    <div class="chat-info">
+                        <div class="name">Éléonore</div>
+                        <div class="status">En ligne — Spécialiste Canada</div>
+                    </div>
+                </div>
+                <div class="chat-body" id="chat-body">
+                    <div class="chat-msg ai">Bonjour ! Je suis <strong>Éléonore</strong>, votre experte Velto. Quelle destination vous fait rêver aujourd'hui ? 👒</div>
+                    <div class="chat-msg user">Je cherche un vol pour le Japon au départ de Montréal.</div>
+                    <div class="chat-msg ai">Excellente idée ! J'ai trouvé un deal flash à 1 150 CAD incluant un hôtel à Shinjuku. Voulez-vous voir les détails ? 🇯🇵</div>
+                </div>
+            </div>
+
+            <div class="ai-content">
+                <h2>L'intelligence au service de vos rêves.</h2>
+                <p>Éléonore n'est pas qu'une barre de recherche. C'est une agente qui apprend de vos préférences, filtre les taxes canadiennes et déniche les perles rares sur plus de 500 sources en temps réel.</p>
+                <div class="cta-group">
+                    <button class="btn-primary">Lancer une simulation</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <span class="logo footer-logo">VELTO<span>.</span></span>
+            <div class="footer-links">
+                <a href="#">À propos</a>
+                <a href="#">Guide Voyage</a>
+                <a href="#">Conditions</a>
+                <a href="#">Confidentialité</a>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 VELTO TRAVEL. Fabriqué avec passion au Canada 🇨🇦</p>
+                <p style="margin-top: 1rem; opacity: 0.5;">Propulsé par Éléonore Intelligence</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JS -->
+    <script src="main.js"></script>
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

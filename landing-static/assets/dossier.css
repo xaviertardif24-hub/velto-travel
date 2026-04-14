@@ -1,0 +1,165 @@
+/* ============================================
+   VELTO — Dossier Voyage Dashboard (v1.0)
+   Style: Ultra-Premium Glassmorphism
+   ============================================ */
+
+:root {
+    --primary: #22c55e;
+    --primary-light: #4ade80;
+    --bg-dark: #0f172a;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --accent-yellow: #facc15;
+    --text-muted: #94a3b8;
+}
+
+/* Dashboard Container */
+#travel-dossier-root {
+    position: fixed;
+    top: 25px;
+    right: 80px; /* À côté du bouton historique */
+    z-index: 90;
+    font-family: 'Inter', sans-serif;
+}
+
+.dossier-card {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 15px 20px;
+    min-width: 280px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.dossier-card:hover {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 50px rgba(34, 197, 94, 0.2);
+}
+
+/* Header */
+.dossier-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.dossier-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--primary-light);
+}
+
+.completion-badge {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    border-radius: 100px;
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+/* Item List */
+.dossier-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dossier-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0.4;
+    transition: all 0.3s ease;
+}
+
+.dossier-item.active {
+    opacity: 1;
+}
+
+.dossier-item .icon {
+    font-size: 1rem;
+    width: 24px;
+    text-align: center;
+}
+
+.dossier-item .info {
+    display: flex;
+    flex-direction: column;
+}
+
+.dossier-item .label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+}
+
+.dossier-item .value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+}
+
+/* Progress Bar */
+.dossier-progress-bg {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.dossier-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: 10px;
+    width: 0%;
+    transition: width 1s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+}
+
+/* Special Alert for Family Needs */
+.dossier-alert {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: none; /* Only show if needed */
+}
+
+.dossier-alert.visible {
+    display: block;
+    animation: fadeIn 0.4s ease;
+}
+
+.alert-text {
+    font-size: 0.72rem;
+    color: var(--accent-yellow);
+    font-style: italic;
+}.dossier-alert i { margin-right: 6px; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    #travel-dossier-root {
+        top: auto;
+        bottom: 120px;
+        right: 20px;
+        left: 20px;
+    }
+    .dossier-card {
+        width: auto;
+    }
+}
